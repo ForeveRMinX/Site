@@ -1,33 +1,165 @@
 <html>
-<body style="background:#0f172a; color:white; text-align:center; font-family:Arial;">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<style>
+body {
+    margin:0;
+    background: radial-gradient(circle at top, #1e293b, #020617);
+    color:white;
+    text-align:center;
+    font-family:Arial;
+    overflow:hidden;
+}
+
+/* yıldızlar */
+.star {
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:white;
+    animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+    from {opacity:0.2;}
+    to {opacity:1;}
+}
+
+/* kutu */
+.box {
+    margin-top:100px;
+    background:#1e293b;
+    padding:30px;
+    border-radius:20px;
+    display:inline-block;
+    box-shadow:0 0 30px rgba(255,255,255,0.1);
+}
+
+/* input */
+input {
+    padding:10px;
+    margin:5px;
+    border-radius:10px;
+    border:none;
+}
+
+/* buton */
+button {
+    padding:10px 20px;
+    border-radius:10px;
+    border:none;
+    background:#38bdf8;
+    font-weight:bold;
+}
+
+/* kalpler */
+.heart {
+    position:fixed;
+    color:red;
+    font-size:20px;
+    animation: fall 5s linear infinite;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-10%); opacity:1; }
+    100% { transform: translateY(110%); opacity:0; }
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="box">
 <h1>Hoşgeldin Baharım 🤍</h1>
 
-<input id="user" placeholder="Kullanıcı adı"><br><br>
+<input id="user" placeholder="Kullanıcı adı"><br>
 <input id="pass" type="password" placeholder="Şifre"><br><br>
+
 <button onclick="giris()">Giriş</button>
 
 <div id="icerik"></div>
+</div>
+
+<audio id="m">
+<source src="sarki.mp3">
+</audio>
 
 <script>
+
+/* yıldız oluştur */
+for(let i=0;i<100;i++){
+    let s=document.createElement("div");
+    s.className="star";
+    s.style.left=Math.random()*100+"vw";
+    s.style.top=Math.random()*100+"vh";
+    document.body.appendChild(s);
+}
+
 function giris(){
-    let u = document.getElementById("user").value;
-    let p = document.getElementById("pass").value;
+    let u=document.getElementById("user").value;
+    let p=document.getElementById("pass").value;
 
     if(u=="bahar" && p=="askim"){
         document.getElementById("icerik").innerHTML = `
-        <h2>BAHARIMMM ❤️</h2>
-        <button onclick="muzik()">🎵 Müziği başlat</button>
-        <audio id="m">
-        <source src="sarki.mp3">
-        </audio>
+        <h2 id="yazi"></h2>
+        <button onclick="baslat()">🎵 Başlat</button>
         `;
+
+        yaz();
+        kalp();
+        fireworks();
     }
 }
 
-function muzik(){
+function yaz(){
+    let mesaj=[
+        "BAHARIMMM ❤️",
+        "SENİ ÇOK AMA ÇOK SEVİYORUM",
+        "İYİ Kİ VARSIN",
+        "BU SİTE SENİN İÇİN 😄"
+    ];
+
+    let i=0;
+    function yazdir(){
+        if(i<mesaj.length){
+            document.getElementById("yazi").innerHTML+=mesaj[i]+"<br>";
+            i++;
+            setTimeout(yazdir,1000);
+        }
+    }
+    yazdir();
+}
+
+function baslat(){
     document.getElementById("m").play();
 }
+
+function kalp(){
+    setInterval(()=>{
+        let h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML="❤️";
+        h.style.left=Math.random()*100+"vw";
+        document.body.appendChild(h);
+
+        setTimeout(()=>h.remove(),5000);
+    },200);
+}
+
+function fireworks(){
+    setInterval(()=>{
+        confetti({
+            particleCount:150,
+            spread:120,
+            origin:{y:0.6}
+        });
+    },2000);
+}
+
 </script>
 
 </body>
